@@ -4,11 +4,11 @@ export interface IProduto {
     preco: number;
     descricaoPreco: string;
     imagem: string;
-    quantidadeEstoque: Number
+    quantidadeEstoque: number
 }
 
 export interface IProdutoCarrinho extends IProduto{
-    quantidade: Number
+    quantidade: number
 }
 
 export const produtos: IProduto[] = [
