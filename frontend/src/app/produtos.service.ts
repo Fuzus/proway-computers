@@ -1,20 +1,33 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IProduto, produtos } from './produtos';
+import { map, Observable } from 'rxjs';
+import { IProduto } from './produtos';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProdutosService {
 
-  produtos: IProduto[] = produtos;
+  produtos: IProduto[] = [];
 
-  constructor() { }
+  url = "http://localhost:8080/produtos"
 
-  getAll() {
-    return this.produtos
+  constructor(private http: HttpClient) { }
+
+  getAll(): Observable<IProduto[]> {
+    return this.http.get<IProduto[]>(this.url).pipe(
+      map((res) => {
+        this.produtos = res;
+        return this.produtos;
+      })
+    );
   }
 
-  getOne(produtoId: Number) {
-    return this.produtos.find( produto => produto.id == produtoId ); 
+  getOne(produtoId: number) {
+    return this.http.get<IProduto>(this.url+`/${produtoId}`).pipe(
+      map((res) => {
+        return res;
+      })
+    );
   }
 }

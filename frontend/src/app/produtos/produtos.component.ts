@@ -8,27 +8,31 @@ import { ProdutosService } from '../produtos.service';
   templateUrl: './produtos.component.html',
   styleUrls: ['./produtos.component.css']
 })
-export class ProdutosComponent implements OnInit{
+export class ProdutosComponent implements OnInit {
   produtos: IProduto[] | undefined;
 
   constructor(
-    private produtoService : ProdutosService,
+    private produtoService: ProdutosService,
     private route: ActivatedRoute
-    ){}
+  ) { }
 
   ngOnInit(): void {
     const produtos = this.produtoService.getAll();
-    
+
     this.route.queryParamMap.subscribe(params => {
       const descricao = params.get("descricao")?.toLowerCase();
 
-      if(descricao) {
-        this.produtos = produtos.filter(produto => produto.descricao.toLowerCase().includes(descricao));
-        return;
-      }
+      produtos.subscribe((res: IProduto[]) => {
+        if (descricao) {
+          this.produtos = res.filter(produto => produto.descricao.toLowerCase().includes(descricao));
+        } else {
+          this.produtos = res;
+        }
+      });
 
-      this.produtos = produtos;
-    });  
+      return this.produtos;
+
+    });
   }
 
 

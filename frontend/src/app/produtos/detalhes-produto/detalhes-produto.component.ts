@@ -26,7 +26,10 @@ export class DetalhesProdutoComponent implements OnInit {
     const routeParams = this.route.snapshot.paramMap;
     const produtoId = Number(routeParams.get("id"))
 
-    this.produto = this.produtoService.getOne(produtoId);
+    this.produtoService.getOne(produtoId).subscribe(
+      (res: IProduto) => {
+        this.produto = res;
+      });
   }
 
   adicinarAoCarrinho() {
